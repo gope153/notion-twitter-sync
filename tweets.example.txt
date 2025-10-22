@@ -1,0 +1,20 @@
+# Tweets Queue
+# Add one tweet per line. Empty lines and lines starting with # are ignored.
+# The file is checked every 15 minutes and new tweets are added to the posting queue.
+#
+# Setup Instructions:
+# 1. Copy this file: cp tweets.example.txt tweets.txt
+# 2. Edit tweets.txt and add your tweets (one per line)
+# 3. The application will automatically detect and queue new tweets
+#
+# Example tweets below (remove these and add your own):
+
+Just shipped a new feature! Check it out at example.com
+
+Working on something exciting. More details coming soon...
+
+# This is a comment line and will be ignored
+
+Pro tip: Always test your code before deploying!
+
+Excited to share what we've been building. Stay tuned!
