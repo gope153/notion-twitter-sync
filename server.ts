@@ -8,6 +8,7 @@ import { twitterRouter } from './src/modules/twitter/twitter.routes';
 import { scheduleRouter } from './src/modules/schedule/schedule.routes';
 import { fileRouter } from './src/modules/file/file.routes';
 import setupScheduler from './src/modules/schedule/schedule.scheduler';
+import { authMiddleware } from './src/middleware/auth';
 
 // Validate configuration
 try {
@@ -22,7 +23,6 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(express.static(config.paths.publicDir));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -34,6 +34,12 @@ app.use((req, res, next) => {
     console.log(`[${timestamp}] ${method} ${url} - ${userAgent}`);
     next();
 });
+
+// Apply auth middleware to all routes (both dashboard and API)
+app.use(authMiddleware);
+
+// Static files (after auth)
+app.use(express.static(config.paths.publicDir));
 
 // Mount routers
 app.use('/api', scheduleRouter);
@@ -50,6 +56,12 @@ app.get('/', (req, res) => {
 app.listen(config.port, () => {
     console.log(`📊 Dashboard: http://localhost:${config.port}`);
     console.log(`⚠️  DRY RUN: ${config.dryRun}`);
+
+    if (config.dashboardPassword) {
+        console.log(`🔒 Authentication: ENABLED`);
+    } else {
+        console.log(`⚠️  Authentication: DISABLED (set DASHBOARD_PASSWORD in .env to enable)`);
+    }
 
     // Setup schedulers
     setupScheduler(config, config.port);

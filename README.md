@@ -65,7 +65,10 @@ npm install
    TWITTER_ACCESS_SECRET=xxx...
    DRY_RUN=true
    PORT=3000
+   DASHBOARD_PASSWORD=your_secure_password
    ```
+
+   **Important:** Set a strong password for `DASHBOARD_PASSWORD` to protect your dashboard. Without this, anyone can access and modify your tweet queue!
 
 3. Set up the tweets file:
    ```bash
@@ -157,6 +160,21 @@ Another tweet to post later.
    - Character limit: 280 characters
 
 ## Configuration Options
+
+### Dashboard Authentication
+
+The dashboard is protected by HTTP Basic Authentication. When you access the dashboard, your browser will prompt you to enter credentials:
+
+- **Username**: Enter anything (e.g., "admin" or "user") - the username is completely ignored by the system
+- **Password**: Must match `DASHBOARD_PASSWORD` from `.env`
+
+**Note:** HTTP Basic Auth requires both fields, but only the password is actually checked. The username field is there because it's part of the authentication standard, but you can type literally anything.
+
+**Security Notes:**
+- **Always set a strong password** when deploying to production
+- If `DASHBOARD_PASSWORD` is not set, authentication is disabled (not recommended for production!)
+- Use HTTPS in production to encrypt credentials during transmission
+- The password is checked on every request to the dashboard and API endpoints
 
 ### Dry Run Mode
 

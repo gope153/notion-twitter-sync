@@ -30,6 +30,7 @@ export interface Config {
     twitter: TwitterConfig;
     dryRun: boolean;
     postTime: string;
+    dashboardPassword: string;
     paths: PathsConfig;
     validate: () => boolean;
 }
@@ -56,15 +57,24 @@ const config: Config = {
     // App settings
     dryRun: process.env.DRY_RUN === 'true',
     postTime: process.env.POST_TIME || '10:00',
+    dashboardPassword: process.env.DASHBOARD_PASSWORD || '',
 
     // File paths
-    paths: {
-        stateFile: path.join(__dirname, '..', '..', '..', 'sync-state.json'),
-        scheduleFile: path.join(__dirname, '..', '..', '..', 'schedule.json'),
-        publicDir: path.join(__dirname, '..', '..', '..', 'public'),
-        tweetsFile: path.join(__dirname, '..', '..', '..', 'tweets.txt'),
-        fileStateFile: path.join(__dirname, '..', '..', '..', 'file-state.json'),
-    },
+    // Detect if running from dist/ (production) or src/ (development)
+    paths: (() => {
+        const isProduction = __dirname.includes('/dist/');
+        const levelsUp = isProduction ? 3 : 2; // dist/src/config vs src/config
+
+        const basePath = path.join(__dirname, ...Array(levelsUp).fill('..'));
+
+        return {
+            stateFile: path.join(basePath, 'sync-state.json'),
+            scheduleFile: path.join(basePath, 'schedule.json'),
+            publicDir: path.join(basePath, 'public'),
+            tweetsFile: path.join(basePath, 'tweets.txt'),
+            fileStateFile: path.join(basePath, 'file-state.json'),
+        };
+    })(),
 
     // Validate required config
     validate(): boolean {

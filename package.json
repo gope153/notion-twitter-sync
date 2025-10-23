@@ -1,6 +1,6 @@
 {
   "name": "notion-twitter-sync",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "Automatic sync tool with web dashboard that manages your Twitter posting queue from Notion, text files, and manual entries",
   "main": "dist/server.js",
   "bin": {
