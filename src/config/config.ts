@@ -59,11 +59,11 @@ const config: Config = {
 
     // File paths
     paths: {
-        stateFile: path.join(__dirname, '..', '..', 'sync-state.json'),
-        scheduleFile: path.join(__dirname, '..', '..', 'schedule.json'),
-        publicDir: path.join(__dirname, '..', '..', 'public'),
-        tweetsFile: path.join(__dirname, '..', '..', 'tweets.txt'),
-        fileStateFile: path.join(__dirname, '..', '..', 'file-state.json'),
+        stateFile: path.join(__dirname, '..', '..', '..', 'sync-state.json'),
+        scheduleFile: path.join(__dirname, '..', '..', '..', 'schedule.json'),
+        publicDir: path.join(__dirname, '..', '..', '..', 'public'),
+        tweetsFile: path.join(__dirname, '..', '..', '..', 'tweets.txt'),
+        fileStateFile: path.join(__dirname, '..', '..', '..', 'file-state.json'),
     },
 
     // Validate required config

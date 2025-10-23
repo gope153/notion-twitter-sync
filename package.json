@@ -1,19 +1,54 @@
 {
   "name": "notion-twitter-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "description": "Automatic sync tool with web dashboard that manages your Twitter posting queue from Notion, text files, and manual entries",
   "main": "dist/server.js",
+  "bin": {
+    "notion-twitter-sync": "dist/server.js"
+  },
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
     "start": "node dist/server.js",
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "notion",
+    "twitter",
+    "sync",
+    "automation",
+    "scheduling",
+    "social-media",
+    "dashboard",
+    "tweet-queue",
+    "notion-api",
+    "twitter-api"
+  ],
+  "author": "Markus Kuhn",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markuskuhn/notion-twitter-sync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/markuskuhn/notion-twitter-sync/issues"
+  },
+  "homepage": "https://github.com/markuskuhn/notion-twitter-sync#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "public",
+    "src",
+    "tweets.example.txt",
+    ".env.example",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "dotenv": "^17.2.3",

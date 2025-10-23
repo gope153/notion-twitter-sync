@@ -7,3 +7,4 @@ dist/
 nodemon.json
 gesprochenertextvonmir.txt
 tweets.txt
+file-state.json
