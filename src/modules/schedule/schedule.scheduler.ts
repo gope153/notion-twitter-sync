@@ -44,17 +44,47 @@ function setupScheduler(config: Config, port: number): void {
     });
 
     // Schedule posting once per day at specified time
-    cron.schedule(`${postMinute} ${postHour} * * *`, async () => {
-        console.log('\n[Scheduler] Posting next from queue...');
+    const cronExpression = `${postMinute} ${postHour} * * *`;
+    console.log(`[Scheduler] Cron expression for posting: ${cronExpression}`);
+    
+    // Calculate next run time for logging
+    const now = new Date();
+    const scheduledTime = new Date();
+    scheduledTime.setHours(postHour, postMinute, 0, 0);
+    if (scheduledTime <= now) {
+        scheduledTime.setDate(scheduledTime.getDate() + 1); // Next day
+    }
+    console.log(`[Scheduler] Next post scheduled for: ${scheduledTime.toISOString()}`);
+    
+    cron.schedule(cronExpression, async () => {
+        console.log(`\n[Scheduler] ⏰ Triggered at ${new Date().toISOString()}`);
+        console.log('[Scheduler] Posting next from queue...');
         try {
-            const res = await fetch(`http://localhost:${port}/api/post-next`, {
+            const url = `http://localhost:${port}/api/post-next`;
+            console.log(`[Scheduler] Calling: ${url}`);
+            
+            const res = await fetch(url, {
                 method: 'POST',
                 headers: baseHeaders
             });
+            
+            console.log(`[Scheduler] Response status: ${res.status} ${res.statusText}`);
+            
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error(`[Scheduler] API Error (${res.status}): ${errorText}`);
+                return;
+            }
+            
             const data = await res.json() as any;
-            console.log(`[Scheduler] ${data.message}`);
+            console.log(`[Scheduler] ✅ ${data.message || JSON.stringify(data)}`);
+            
+            if (data.success === false) {
+                console.error(`[Scheduler] ⚠️ Post failed: ${data.message}`);
+            }
         } catch (error) {
-            console.error('[Scheduler] Error:', (error as Error).message);
+            console.error('[Scheduler] ❌ Exception:', (error as Error).message);
+            console.error('[Scheduler] Stack:', (error as Error).stack);
         }
     });
 
